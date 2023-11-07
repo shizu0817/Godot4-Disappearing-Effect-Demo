@@ -1,24 +1,29 @@
-[gd_scene load_steps=17 format=3 uid="uid://bn15srnb17xdj"]
+[gd_scene load_steps=19 format=3 uid="uid://bbsvd3vpvuu6t"]
 
-[ext_resource type="Shader" path="res://shaders/particles/sprite_rect_mask.gdshader" id="1_eud6u"]
-[ext_resource type="Texture2D" uid="uid://c7g6gjfm3ytni" path="res://icon.svg" id="2_aompd"]
+[ext_resource type="Shader" path="res://shaders/particles/sprite_noise_mask.gdshader" id="1_0shew"]
+[ext_resource type="Texture2D" uid="uid://c7g6gjfm3ytni" path="res://icon.svg" id="2_tngfo"]
 
 [sub_resource type="Gradient" id="Gradient_73rlx"]
 colors = PackedColorArray(0.46504, 0.14244, 0.739629, 1, 1, 0.48, 0.818, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_xea62"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1koqa"]
 gradient = SubResource("Gradient_73rlx")
 
-[sub_resource type="Curve" id="Curve_d2c5v"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.254335, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.48421), 0.0, 0.0, 0, 0, Vector2(0.754335, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_68igr"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qy3rd"]
+noise = SubResource("FastNoiseLite_68igr")
+
+[sub_resource type="Curve" id="Curve_0u2oi"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.254335, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.526316), 0.0, 0.0, 0, 0, Vector2(0.739884, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 5
 
-[sub_resource type="CurveTexture" id="CurveTexture_7isc1"]
-curve = SubResource("Curve_d2c5v")
+[sub_resource type="CurveTexture" id="CurveTexture_ffxqv"]
+curve = SubResource("Curve_0u2oi")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oifvb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m78tq"]
 resource_local_to_scene = true
-shader = ExtResource("1_eud6u")
+shader = ExtResource("1_0shew")
 shader_parameter/direction = Vector3(1, 0, 0)
 shader_parameter/spread = 45.0
 shader_parameter/flatness = 0.0
@@ -30,7 +35,7 @@ shader_parameter/linear_accel_min = 0.0
 shader_parameter/radial_accel_min = 0.0
 shader_parameter/tangent_accel_min = 0.0
 shader_parameter/damping_min = 0.0
-shader_parameter/scale_min = 1.0
+shader_parameter/scale_min = 0.8
 shader_parameter/hue_variation_min = 0.0
 shader_parameter/anim_speed_min = 0.0
 shader_parameter/anim_offset_min = 0.0
@@ -42,7 +47,7 @@ shader_parameter/linear_accel_max = 0.0
 shader_parameter/radial_accel_max = 0.0
 shader_parameter/tangent_accel_max = 0.0
 shader_parameter/damping_max = 0.0
-shader_parameter/scale_max = 1.0
+shader_parameter/scale_max = 0.8
 shader_parameter/hue_variation_max = 0.0
 shader_parameter/anim_speed_max = 0.0
 shader_parameter/anim_offset_max = 0.0
@@ -52,16 +57,17 @@ shader_parameter/color_value = Color(1, 1, 1, 1)
 shader_parameter/gravity = Vector3(0, -1e-06, 0)
 shader_parameter/down_border = 0.0
 shader_parameter/top_border = 0.0
-shader_parameter/color_initial_ramp = SubResource("GradientTexture1D_xea62")
-shader_parameter/scale_texture = SubResource("CurveTexture_7isc1")
-shader_parameter/sprite = ExtResource("2_aompd")
+shader_parameter/color_initial_ramp = SubResource("GradientTexture1D_1koqa")
+shader_parameter/scale_texture = SubResource("CurveTexture_ffxqv")
+shader_parameter/sprite = ExtResource("2_tngfo")
+shader_parameter/noise = SubResource("NoiseTexture2D_qy3rd")
 
 [sub_resource type="Gradient" id="Gradient_s6pxs"]
 interpolation_mode = 1
 offsets = PackedFloat32Array(0, 0.554286)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_mdik8"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_337ym"]
 gradient = SubResource("Gradient_s6pxs")
 width = 32
 height = 32
@@ -70,58 +76,59 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 metadata/_snap_enabled = true
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yvyup"]
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ootvy"]
 blend_mode = 2
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ko5w"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2k44o"]
 resource_local_to_scene = true
-shader = ExtResource("1_eud6u")
-shader_parameter/direction = Vector3(1, 0, 0)
-shader_parameter/spread = 45.0
-shader_parameter/flatness = 0.0
-shader_parameter/initial_linear_velocity_min = 0.0
-shader_parameter/initial_angle_min = 0.0
-shader_parameter/angular_velocity_min = 0.0
-shader_parameter/orbit_velocity_min = 0.0
-shader_parameter/linear_accel_min = 0.0
-shader_parameter/radial_accel_min = 0.0
-shader_parameter/tangent_accel_min = 0.0
-shader_parameter/damping_min = 0.0
+shader = ExtResource("1_0shew")
+shader_parameter/direction = null
+shader_parameter/spread = null
+shader_parameter/flatness = null
+shader_parameter/initial_linear_velocity_min = null
+shader_parameter/initial_angle_min = null
+shader_parameter/angular_velocity_min = null
+shader_parameter/orbit_velocity_min = null
+shader_parameter/linear_accel_min = null
+shader_parameter/radial_accel_min = null
+shader_parameter/tangent_accel_min = null
+shader_parameter/damping_min = null
 shader_parameter/scale_min = 1.0
-shader_parameter/hue_variation_min = 0.0
-shader_parameter/anim_speed_min = 0.0
-shader_parameter/anim_offset_min = 0.0
-shader_parameter/initial_linear_velocity_max = 0.0
-shader_parameter/initial_angle_max = 0.0
-shader_parameter/angular_velocity_max = 0.0
-shader_parameter/orbit_velocity_max = 0.0
-shader_parameter/linear_accel_max = 0.0
-shader_parameter/radial_accel_max = 0.0
-shader_parameter/tangent_accel_max = 0.0
-shader_parameter/damping_max = 0.0
+shader_parameter/hue_variation_min = null
+shader_parameter/anim_speed_min = null
+shader_parameter/anim_offset_min = null
+shader_parameter/initial_linear_velocity_max = null
+shader_parameter/initial_angle_max = null
+shader_parameter/angular_velocity_max = null
+shader_parameter/orbit_velocity_max = null
+shader_parameter/linear_accel_max = null
+shader_parameter/radial_accel_max = null
+shader_parameter/tangent_accel_max = null
+shader_parameter/damping_max = null
 shader_parameter/scale_max = 1.0
-shader_parameter/hue_variation_max = 0.0
-shader_parameter/anim_speed_max = 0.0
-shader_parameter/anim_offset_max = 0.0
-shader_parameter/lifetime_randomness = 0.0
-shader_parameter/emission_box_extents = Vector3(64, 64, 1)
+shader_parameter/hue_variation_max = null
+shader_parameter/anim_speed_max = null
+shader_parameter/anim_offset_max = null
+shader_parameter/lifetime_randomness = null
+shader_parameter/emission_box_extents = Vector3(64, 64, 0)
 shader_parameter/color_value = Color(1, 1, 1, 1)
-shader_parameter/gravity = Vector3(0, -1e-06, 0)
+shader_parameter/gravity = null
 shader_parameter/down_border = 0.0
 shader_parameter/top_border = 0.0
-shader_parameter/sprite = ExtResource("2_aompd")
+shader_parameter/sprite = ExtResource("2_tngfo")
+shader_parameter/noise = SubResource("NoiseTexture2D_qy3rd")
 
 [sub_resource type="Gradient" id="Gradient_46kpx"]
 colors = PackedColorArray(0.0196078, 0.0196078, 0.0196078, 1, 0, 0, 0, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_rres6"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6i5i6"]
 gradient = SubResource("Gradient_46kpx")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 metadata/_snap_enabled = true
 
-[sub_resource type="Animation" id="Animation_bdx21"]
+[sub_resource type="Animation" id="Animation_y523u"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -172,7 +179,7 @@ tracks/3/keys = {
 "values": [0.0]
 }
 
-[sub_resource type="Animation" id="Animation_0bf74"]
+[sub_resource type="Animation" id="Animation_022l3"]
 resource_name = "dissolve"
 length = 3.0
 tracks/0/type = "value"
@@ -197,15 +204,39 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.2, 1.0]
+"values": [0.0, 1.0]
 }
-tracks/2/type = "method"
+tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath(".")
+tracks/2/path = NodePath("DarkenParticles:process_material:shader_parameter/down_border")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DarkenParticles:process_material:shader_parameter/top_border")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
 "times": PackedFloat32Array(3),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -213,54 +244,30 @@ tracks/2/keys = {
 "method": &"queue_free"
 }]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("DarkenParticles:process_material:shader_parameter/down_border")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.5, 2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 0.0, 1.0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("DarkenParticles:process_material:shader_parameter/top_border")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.2, 1.0]
-}
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_yprcl"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wk6rs"]
 _data = {
-"RESET": SubResource("Animation_bdx21"),
-"dissolve": SubResource("Animation_0bf74")
+"RESET": SubResource("Animation_y523u"),
+"dissolve": SubResource("Animation_022l3")
 }
 
-[node name="DissolveEffect1" type="Node2D"]
+[node name="DissolveEffect2" type="Node2D"]
 
 [node name="DissolveParticles" type="GPUParticles2D" parent="."]
 amount = 1024
-process_material = SubResource("ShaderMaterial_oifvb")
-texture = SubResource("GradientTexture2D_mdik8")
+process_material = SubResource("ShaderMaterial_m78tq")
+texture = SubResource("GradientTexture2D_337ym")
 local_coords = true
 
 [node name="DarkenParticles" type="GPUParticles2D" parent="."]
-material = SubResource("CanvasItemMaterial_yvyup")
+material = SubResource("CanvasItemMaterial_ootvy")
 amount = 1500
-process_material = SubResource("ShaderMaterial_8ko5w")
-texture = SubResource("GradientTexture2D_rres6")
+process_material = SubResource("ShaderMaterial_2k44o")
+texture = SubResource("GradientTexture2D_6i5i6")
 local_coords = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "dissolve"
 libraries = {
-"": SubResource("AnimationLibrary_yprcl")
+"": SubResource("AnimationLibrary_wk6rs")
 }

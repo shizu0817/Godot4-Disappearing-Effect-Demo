@@ -1,29 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://dqxptvtjs1wqr"]
+[gd_scene load_steps=18 format=3 uid="uid://dqxptvtjs1wqr"]
 
 [ext_resource type="Shader" path="res://shaders/dissolve_from_top.gdshader" id="1_6i6y3"]
 [ext_resource type="Texture2D" uid="uid://c7g6gjfm3ytni" path="res://icon.svg" id="2_hvo7e"]
 [ext_resource type="Script" path="res://scripts/demo_sprite.gd" id="3_3ycdd"]
 [ext_resource type="PackedScene" uid="uid://bn15srnb17xdj" path="res://scenes/dissolve_effect_1.tscn" id="3_vdm3h"]
+[ext_resource type="PackedScene" uid="uid://bbsvd3vpvuu6t" path="res://scenes/dissolve_effect_2.tscn" id="5_hhe8r"]
+[ext_resource type="Shader" path="res://shaders/dissolve_by_noise.gdshader" id="5_ox7yf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_2l31o"]
+font_size = 32
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ftfb2"]
+resource_local_to_scene = true
 shader = ExtResource("1_6i6y3")
 shader_parameter/dissolve_below = 0.0
-
-[sub_resource type="Animation" id="Animation_yfa7o"]
-resource_name = "dissolve1"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:material:shader_parameter/dissolve_below")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4, 2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 0.0, 1.0]
-}
 
 [sub_resource type="Animation" id="Animation_cvw2n"]
 length = 0.001
@@ -40,23 +30,113 @@ tracks/0/keys = {
 "values": [0.0]
 }
 
+[sub_resource type="Animation" id="Animation_yfa7o"]
+resource_name = "dissolve"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/dissolve_below")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_a4hkh"]
 _data = {
 "RESET": SubResource("Animation_cvw2n"),
-"dissolve1": SubResource("Animation_yfa7o")
+"dissolve": SubResource("Animation_yfa7o")
+}
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_68igr"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ybt2q"]
+noise = SubResource("FastNoiseLite_68igr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_frkqn"]
+resource_local_to_scene = true
+shader = ExtResource("5_ox7yf")
+shader_parameter/dissolve_below = 0.0
+shader_parameter/noise = SubResource("NoiseTexture2D_ybt2q")
+
+[sub_resource type="Animation" id="Animation_7ifjg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/dissolve_below")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_86ery"]
+resource_name = "dissolve"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/dissolve_below")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jvmos"]
+_data = {
+"RESET": SubResource("Animation_7ifjg"),
+"dissolve": SubResource("Animation_86ery")
 }
 
 [node name="DemoScene" type="Node2D"]
 
-[node name="Icon" type="Sprite2D" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 97.0
+offset_bottom = 193.0
+grow_horizontal = 2
+text = "Press 'R' to RESET,
+Press 'SpaceBar' to play effects"
+label_settings = SubResource("LabelSettings_2l31o")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sprite1" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_ftfb2")
-position = Vector2(712, 414)
+position = Vector2(365, 377.405)
 scale = Vector2(1, 0.990708)
 texture = ExtResource("2_hvo7e")
 script = ExtResource("3_3ycdd")
-effect1 = ExtResource("3_vdm3h")
+effect_scene = ExtResource("3_vdm3h")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Icon"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite1"]
 libraries = {
 "": SubResource("AnimationLibrary_a4hkh")
+}
+
+[node name="Sprite2" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_frkqn")
+position = Vector2(808, 378.405)
+texture = ExtResource("2_hvo7e")
+script = ExtResource("3_3ycdd")
+effect_scene = ExtResource("5_hhe8r")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2"]
+libraries = {
+"": SubResource("AnimationLibrary_jvmos")
 }
