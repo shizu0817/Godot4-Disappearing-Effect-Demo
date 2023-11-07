@@ -1,8 +1,8 @@
 # Godot4 Disappearing Effect Demo
 Disappearing effects using shader and particles
 <p align="center">
- <img src="https://github.com/shizu0817/DisappearingEffectDemo/assets/54024777/cb937e9a-57e8-4717-90dd-6d0c245ed806" width="40%"/>
- <img src="https://github.com/shizu0817/DisappearingEffectDemo/assets/54024777/925da077-7699-4f8e-acb0-2ec753cca03e" width="40%"/>
+ <img src="https://github.com/shizu0817/Godot4-Disappearing-Effect-Demo/assets/54024777/de3cff16-2630-422c-bf0b-81c2e4b14f10" width="40%"/>
+ <img src="https://github.com/shizu0817/Godot4-Disappearing-Effect-Demo/assets/54024777/98aff6ec-b0be-466a-b4d6-52f19dbc3759" width="40%"/>
 </p>
 
 ## Descriptions
